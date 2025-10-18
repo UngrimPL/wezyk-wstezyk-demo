@@ -6,56 +6,15 @@
   <title>Wężyk Wstężyk 2025 – Odbierz nagrodę</title>
   <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
   <style>
-    body {
-      margin: 0;
-      font-family: Inter, system-ui, Segoe UI, Roboto, Arial, sans-serif;
-      background: #ffffff;
-      color: #0b0d0f;
-    }
-    .wrap {
-      max-width: 900px;
-      margin: 40px auto;
-      padding: 0 20px;
-    }
-    h1 {
-      font-size: clamp(22px, 3vw, 32px);
-      margin: 0 0 20px 0;
-    }
-    label {
-      display: block;
-      margin: 12px 0 6px;
-      color: #111827;
-      font-weight: 600;
-    }
-    select, input, button {
-      width: 100%;
-      padding: 12px 14px;
-      border-radius: 12px;
-      border: 1px solid #d1d5db;
-      background: #ffffff;
-      color: #111827;
-    }
-    input::placeholder {
-      color: #9ca3af;
-    }
-    .row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-    button {
-      cursor: pointer;
-      border: 0;
-      background: linear-gradient(180deg, #22c55e, #16a34a);
-      color: #052e16;
-      font-weight: 800;
-    }
-    footer {
-      margin-top: 20px;
-      color: #6b7280;
-      font-size: 12px;
-      text-align: center;
-    }
+    body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;background:#ffffff;color:#0b0d0f}
+    .wrap{max-width:900px;margin:40px auto;padding:0 20px}
+    h1{font-size:clamp(22px,3vw,32px);margin:0 0 20px 0}
+    label{display:block;margin:12px 0 6px;color:#111827;font-weight:600}
+    select,input,button{width:100%;padding:12px 14px;border-radius:12px;border:1px solid #d1d5db;background:#ffffff;color:#111827}
+    input::placeholder{color:#9ca3af}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    button{cursor:pointer;border:0;background:linear-gradient(180deg,#22c55e,#16a34a);color:#052e16;font-weight:800}
+    footer{margin-top:20px;color:#6b7280;font-size:12px}
   </style>
 </head>
 <body>
@@ -68,7 +27,6 @@
         <option value="park-i-piknik">Park i piknik</option>
         <option value="farma">Farma</option>
       </select>
-
       <div class="row">
         <div>
           <label for="gender">Płeć dziecka</label>
@@ -82,34 +40,26 @@
           <input id="name" type="text" placeholder="np. Ania" required />
         </div>
       </div>
-
       <label for="code">Kod</label>
       <input id="code" type="text" placeholder="np. 123" required />
-
       <button type="submit">ODBIERZ NAGRODĘ</button>
     </form>
-
     <footer>© Wężyk Wstężyk 2025</footer>
   </div>
-
-  <script>
-    const VALID_CODES = new Set(["123", "234", "345"]);
-
-    document.getElementById("form").addEventListener("submit", (e) => {
-      e.preventDefault();
-      const code = document.getElementById("code").value.trim();
-      if (!VALID_CODES.has(code))
-        return alert("Nieprawidłowy kod. Użyj: 123, 234 lub 345");
-
-      const params = new URLSearchParams({
-        art: document.getElementById("art").value,
-        gender: document.getElementById("gender").value,
-        name: document.getElementById("name").value.trim(),
-        code,
-      });
-
-      window.location.href = "gratulacje.html?" + params.toString();
+<script>
+  const VALID_CODES=new Set(["123","234","345"]);
+  document.getElementById('form').addEventListener('submit',e=>{
+    e.preventDefault();
+    const code=document.getElementById('code').value.trim();
+    if(!VALID_CODES.has(code))return alert('Nieprawidłowy kod. Użyj: 123, 234 lub 345');
+    const params=new URLSearchParams({
+      art:document.getElementById('art').value,
+      gender:document.getElementById('gender').value,
+      name:document.getElementById('name').value.trim(),
+      code
     });
-  </script>
+    window.location.href='gratulacje.html?'+params.toString();
+  });
+</script>
 </body>
 </html>
