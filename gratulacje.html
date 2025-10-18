@@ -15,17 +15,20 @@
     a.btn{text-decoration:none;display:inline-block}
     footer{margin-top:24px;color:#6b7280;font-size:12px}
     @media (max-width:560px){.wrap{margin:20px auto;padding:0 14px}.row{gap:10px}.btn{width:100%}}
+    .msg{font-size:13px;color:#6b7280}
+    .err{color:#b91c1c}
   </style>
 </head>
 <body>
   <div class="wrap">
     <h1>🎉 Gratulacje!</h1>
-    <p>Twoja nagroda od <b>Wężyka Wstężyka</b> jest gotowa!</p>
-    <p>Wykazałeś(aś) się świetną spostrzegawczością — dlatego czeka na Ciebie nagroda: osobista kolorowanka oraz dyplom z imieniem.</p>
+    <p id="mainText">Twoja nagroda od <b>Wężyka Wstężyka</b> jest gotowa!</p>
+    <p id="genderText">Wykazałeś(aś) się świetną spostrzegawczością — dlatego czeka na Ciebie nagroda: osobista kolorowanka oraz dyplom z imieniem.</p>
     <div class="row">
       <a id="downloadColor" class="btn" href="#">Pobierz kolorowankę</a>
       <button id="btnDiploma" class="btn">Pobierz dyplom</button>
     </div>
+    <p class="msg" id="colorMsg"></p>
     <p style="margin-top:10px"><a href="index.html">Wróć</a></p>
     <footer>© Wężyk Wstężyk 2025</footer>
   </div>
@@ -51,12 +54,41 @@
     'miejska-uliczka':'assets/pdfs/miejska-uliczka.pdf'
   };
 
+  const colorMsg=document.getElementById('colorMsg');
   const downloadLink=document.getElementById('downloadColor');
-  downloadLink.href=ART_PDFS[art]||'#';
-  downloadLink.download=(ART_LABELS[art]||'kolorowanka')+'.pdf';
+
+  async function ensureExists(url){
+    try{
+      const res=await fetch(url,{method:'HEAD'});
+      return res.ok;
+    }catch(e){return false;}
+  }
+
+  downloadLink.addEventListener('click',async (e)=>{
+    e.preventDefault();
+    const url=ART_PDFS[art];
+    if(!url){colorMsg.textContent='Brak pliku dla tej kolorowanki.';colorMsg.className='msg err';return;}
+    const ok=await ensureExists(url);
+    if(!ok){
+      colorMsg.textContent='Nie znaleziono pliku: '+url+' (sprawdź ścieżkę i wielkość liter w repo).';
+      colorMsg.className='msg err';
+      return;
+    }
+    colorMsg.textContent='Pobieranie…'; colorMsg.className='msg';
+    const a=document.createElement('a');
+    a.href=url; a.download=(ART_LABELS[art]||'kolorowanka')+'.pdf';
+    document.body.appendChild(a); a.click(); a.remove();
+    colorMsg.textContent='';
+  });
+
+  const genderText=document.getElementById('genderText');
+  if(gender==='chlopiec'){
+    genderText.textContent='Wykazałeś się świetną spostrzegawczością — dlatego czeka na Ciebie nagroda: osobista kolorowanka oraz dyplom z imieniem.';
+  } else {
+    genderText.textContent='Wykazałaś się świetną spostrzegawczością — dlatego czeka na Ciebie nagroda: osobista kolorowanka oraz dyplom z imieniem.';
+  }
 
   function titleByGender(g){return g==='dziewczynka'?'Super-Kolorystka':'Super-Kolorysta';}
-
   function drawDiploma(doc){
     doc.setFillColor(255,255,255);doc.rect(0,0,210,297,'F');
     doc.setTextColor(0,0,0);doc.setFont('helvetica','bold');doc.setFontSize(26);
@@ -76,7 +108,8 @@
   }
 
   document.getElementById('btnDiploma').addEventListener('click',()=>{
-    const {jsPDF}=window.jspdf;const doc=new jsPDF({unit:'mm',format:'a4'});drawDiploma(doc);doc.save('dyplom_'+name.replace(/\s+/g,'_')+'.pdf');
+    const {jsPDF}=window.jspdf;const doc=new jsPDF({unit:'mm',format:'a4'});
+    drawDiploma(doc);doc.save('dyplom_'+name.replace(/\s+/g,'_')+'.pdf');
   });
 </script>
 </body>
