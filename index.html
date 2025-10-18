@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Wężyk Wstężyk 2025 – Odbierz nagrodę</title>
+  <title>Wężyk Wstężyk – Odbierz nagrodę</title>
   <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
   <style>
     body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;background:#ffffff;color:#0b0d0f}
@@ -13,20 +13,23 @@
     select,input,button{width:100%;padding:12px 14px;border-radius:12px;border:1px solid #d1d5db;background:#ffffff;color:#111827}
     input::placeholder{color:#9ca3af}
     .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    button{cursor:pointer;border:0;background:linear-gradient(180deg,#22c55e,#16a34a);color:#052e16;font-weight:800}
-    footer{margin-top:20px;color:#6b7280;font-size:12px}
+    button{cursor:pointer;border:0;background:linear-gradient(180deg,#22c55e,#16a34a);color:#052e16;font-weight:800;margin-top:12px}
+    footer{margin-top:20px;color:#6b7280;font-size:12px;text-align:center}
+    @media (max-width:560px){.wrap{margin:20px auto;padding:0 14px}.row{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
   <div class="wrap">
-    <h1>🎨 Wężyk Wstężyk 2025</h1>
+    <h1>🎨 Wężyk Wstężyk</h1>
     <form id="form">
-      <label for="art">Wybierz obrazek</label>
+      <label for="art">Wybierz swoją kolorowankę</label>
       <select id="art" required>
-        <option value="plac-budowy">Plac budowy</option>
-        <option value="park-i-piknik">Park i piknik</option>
-        <option value="farma">Farma</option>
+        <option value="plac-budowy">Plac budowy (kod: 123)</option>
+        <option value="wiejskie-zycie">Wiejskie życie (kod: 456)</option>
+        <option value="dzien-na-farmie">Dzień na farmie (kod: 678)</option>
+        <option value="miejska-uliczka">Miejska uliczka (kod: 111)</option>
       </select>
+
       <div class="row">
         <div>
           <label for="gender">Płeć dziecka</label>
@@ -40,25 +43,38 @@
           <input id="name" type="text" placeholder="np. Ania" required />
         </div>
       </div>
+
       <label for="code">Kod</label>
       <input id="code" type="text" placeholder="np. 123" required />
+
       <button type="submit">ODBIERZ NAGRODĘ</button>
     </form>
+
     <footer>© Wężyk Wstężyk 2025</footer>
   </div>
+
 <script>
-  const VALID_CODES=new Set(["123","234","345"]);
-  document.getElementById('form').addEventListener('submit',e=>{
+  const VALID_CODES_BY_ART = {
+    'plac-budowy': '123',
+    'wiejskie-zycie': '456',
+    'dzien-na-farmie': '678',
+    'miejska-uliczka': '111'
+  };
+
+  document.getElementById('form').addEventListener('submit', (e) => {
     e.preventDefault();
-    const code=document.getElementById('code').value.trim();
-    if(!VALID_CODES.has(code))return alert('Nieprawidłowy kod. Użyj: 123, 234 lub 345');
-    const params=new URLSearchParams({
-      art:document.getElementById('art').value,
-      gender:document.getElementById('gender').value,
-      name:document.getElementById('name').value.trim(),
+    const art = document.getElementById('art').value;
+    const expected = VALID_CODES_BY_ART[art];
+    const code = document.getElementById('code').value.trim();
+    if (code !== expected) return alert('Nieprawidłowy kod dla wybranej kolorowanki.');
+
+    const params = new URLSearchParams({
+      art,
+      gender: document.getElementById('gender').value,
+      name: document.getElementById('name').value.trim(),
       code
     });
-    window.location.href='gratulacje.html?'+params.toString();
+    window.location.href = 'gratulacje.html?' + params.toString();
   });
 </script>
 </body>
