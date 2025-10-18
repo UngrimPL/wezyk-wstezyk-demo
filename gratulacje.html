@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Gratulacje – Wężyk Wstężyk 2025</title>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+  <style>
+    body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;background:#ffffff;color:#0b0d0f}
+    .wrap{max-width:900px;margin:40px auto;padding:0 20px;text-align:center}
+    h1{font-size:clamp(24px,4vw,36px);margin:0 0 12px}
+    p{margin:6px 0 20px}
+    .row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+    button{cursor:pointer;border:0;border-radius:12px;padding:14px 18px;background:linear-gradient(180deg,#22c55e,#16a34a);color:#052e16;font-weight:800}
+    footer{margin-top:24px;color:#6b7280;font-size:12px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>🎉 Gratulacje!</h1>
+    <p>Twoja nagroda od <b>Wężyk Wstężyk 2025</b> jest gotowa.</p>
+    <div class="row">
+      <button id="btnColor">Pobierz kolorowankę</button>
+      <button id="btnDiploma">Pobierz dyplom</button>
+    </div>
+    <p><a href="index.html">Wróć</a></p>
+    <footer>© Wężyk Wstężyk 2025</footer>
+  </div>
+
+<script>
+  const params=new URLSearchParams(location.search);
+  const name=params.get('name')||'Twoje imię';
+  const gender=params.get('gender')||'dziewczynka';
+  const art=params.get('art')||'plac-budowy';
+  const code=params.get('code')||'';
+
+  const ART_LABELS={"plac-budowy":"Plac budowy","park-i-piknik":"Park i piknik","farma":"Farma"};
+  function titleByGender(g){return g==='dziewczynka'? 'Super-Kolorystka':'Super-Kolorysta';}
+
+  function drawColoringPage(doc){
+    doc.setFillColor(255,255,255);doc.rect(0,0,210,297,'F');
+    doc.setDrawColor(0,0,0);doc.setLineWidth(0.6);
+    doc.setFont('helvetica','bold');doc.setFontSize(18);
+    doc.text('Kolorowanka – Wężyk Wstężyk 2025',105,18,{align:'center'});
+    doc.setLineWidth(1.2);doc.ellipse(55,72,22,28,'S');
+    doc.setLineWidth(0.6);doc.line(55,100,58,115);doc.line(58,115,53,130);doc.line(53,130,60,144);doc.line(46,102,64,102);
+    const kx=140,ky=70,s=26;doc.setLineWidth(1.2);doc.line(kx,ky-s,kx+s,ky);doc.line(kx+s,ky,kx,ky+s);doc.line(kx,ky+s,kx-s,ky);doc.line(kx-s,ky,kx,ky-s);
+    doc.setLineWidth(0.6);doc.line(kx-s,ky,kx+s,ky);doc.line(kx,ky-s,kx,ky+s);
+    doc.line(140,96,136,110);doc.line(136,110,142,122);doc.line(142,122,130,138);
+    function bow(cx,cy,w=6,h=4){doc.line(cx,cy,cx-w,cy-h);doc.line(cx,cy,cx-w,cy+h);doc.line(cx,cy,cx+w,cy-h);doc.line(cx,cy,cx+w,cy+h);} bow(136,110);bow(142,122);bow(130,138);
+    const dx=45,dy=200,rx=38,ry=10;doc.setLineWidth(1.2);doc.ellipse(dx+60,dy,rx,ry,'S');doc.setLineWidth(0.6);doc.line(dx+22,dy,dx+22,dy+24);doc.line(dx+98,dy,dx+98,dy+24);doc.ellipse(dx+60,dy+24,rx,ry,'S');
+    function flower(cx,cy,r=3.6){doc.circle(cx-r,cy,r,'S');doc.circle(cx+r,cy,r,'S');doc.circle(cx,cy-r,r,'S');doc.circle(cx,cy+r,r,'S');doc.circle(cx,cy,r*0.9,'S');}
+    [[dx+46,dy-10],[dx+60,dy-14],[dx+74,dy-9],[dx+34,dy-6],[dx+86,dy-5],[dx+60,dy-2]].forEach(([cx,cy])=>flower(cx,cy));
+    for(let i=0;i<8;i++){const bx=dx+30+i*8;doc.line(bx,dy+12,bx-2,dy-2-(i%3));}
+    doc.setLineWidth(0.3);doc.rect(12,12,186,273,'S');
+    doc.setFont('helvetica','normal');doc.setFontSize(10);
+    doc.text('Czarne kontury (#000000), białe tło – gotowe do druku.',105,286,{align:'center'});
+  }
+
+  function drawDiploma(doc){
+    doc.setFillColor(255,255,255);doc.rect(0,0,210,297,'F');
+    doc.setTextColor(0,0,0);doc.setFont('helvetica','bold');doc.setFontSize(26);
+    doc.text('Dyplom '+titleByGender(gender),105,36,{align:'center'});
+    doc.setFontSize(38);doc.text(name,105,70,{align:'center'});
+    doc.setFont('helvetica','normal');doc.setFontSize(14);
+    const lines=['Za wspaniałe kolorowanie sceny: '+(ART_LABELS[art]||art),'i kreatywność bez granic!'];
+    let y=92;lines.forEach(t=>{doc.text(t,105,y,{align:'center'});y+=8;});
+    doc.setDrawColor(0,0,0);doc.setLineWidth(0.8);doc.roundedRect(40,120,130,18,6,6,'S');
+    doc.setFont('helvetica','bold');doc.setFontSize(16);doc.text('Wężyk Wstężyk 2025',105,133,{align:'center'});
+    doc.setFont('helvetica','normal');doc.setFontSize(11);doc.text('Kod zamówienia: '+code,105,160,{align:'center'});
+    doc.setLineWidth(1.2);doc.circle(105,205,28,'S');doc.setFont('helvetica','bold');doc.setFontSize(14);doc.text('BRAWO!',105,203,{align:'center'});
+    doc.setFontSize(10);doc.text('SUPER KOLOROWANIE',105,213,{align:'center'});
+    doc.setFont('helvetica','normal');doc.setFontSize(10);
+    doc.text('Data: '+new Date().toLocaleDateString('pl-PL'),20,286);
+    doc.text('© Wężyk Wstężyk 2025',190,286,{align:'right'});
+  }
+
+  document.getElementById('btnColor').addEventListener('click',()=>{const {jsPDF}=window.jspdf;const doc=new jsPDF({unit:'mm',format:'a4'});drawColoringPage(doc);doc.save('kolorowanka.pdf');});
+  document.getElementById('btnDiploma').addEventListener('click',()=>{const {jsPDF}=window.jspdf;const doc=new jsPDF({unit:'mm',format:'a4'});drawDiploma(doc);doc.save('dyplom.pdf');});
+</script>
+</body>
+</html>
