@@ -3,321 +3,113 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Kolorowanka – Demo pobierania PDF z kodem</title>
-  <meta name="description" content="Demo: formularz z wyborem obrazka, płci, imienia i kodu – generuje PDF (dyplom + kolorowanka) w przeglądarce.">
-  <!-- jsPDF CDN -->
+  <title>Wężyk Wstężyk 2025 – Odbierz nagrodę</title>
   <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
   <style>
-    :root { --bg:#0b0d0f; --card:#111418; --muted:#9aa4b2; --acc:#34d399; }
-    *{box-sizing:border-box}
-    body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:#e5e7eb;}
-    .wrap{max-width:980px;margin:32px auto;padding:0 20px}
-    header{display:flex;align-items:center;gap:16px;margin-bottom:20px}
-    header .logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#111,#1f2937)}
-    h1{font-size:clamp(22px,3vw,32px);margin:0}
-    .grid{display:grid;grid-template-columns:1.2fr .8fr;gap:20px}
-    @media (max-width:900px){.grid{grid-template-columns:1fr;}}
-    .card{background:var(--card);border:1px solid #1f2937;border-radius:16px;padding:18px}
-    .card h2{margin:0 0 10px;font-size:18px}
-    label{display:block;margin:12px 0 6px;color:#cbd5e1;font-weight:600}
-    select,input,button,textarea{width:100%;padding:12px 14px;border-radius:12px;border:1px solid #263241;background:#0d1117;color:#e5e7eb}
-    input::placeholder{color:#707a86}
-    .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    .help{color:var(--muted);font-size:13px}
-    .ok{color:#22c55e}
-    .bad{color:#f97316}
-    .actions{display:flex;gap:10px;margin-top:14px}
-    button{cursor:pointer;border:1px solid #334155;background:#111827}
-    button.primary{background:linear-gradient(180deg,#22c55e,#16a34a);border:0;color:#051b0f;font-weight:800}
-    .preview{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
-    .chip{padding:8px 12px;border:1px dashed #334155;border-radius:999px;font-size:13px;color:#cbd5e1}
-    footer{margin-top:20px;color:#94a3b8;font-size:12px}
-    .code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:#0a0d11;border:1px solid #1f2937;border-radius:10px;padding:8px 10px;display:inline-block}
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, Segoe UI, Roboto, Arial, sans-serif;
+      background: #ffffff;
+      color: #0b0d0f;
+    }
+    .wrap {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+    h1 {
+      font-size: clamp(22px, 3vw, 32px);
+      margin: 0 0 20px 0;
+    }
+    label {
+      display: block;
+      margin: 12px 0 6px;
+      color: #111827;
+      font-weight: 600;
+    }
+    select, input, button {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid #d1d5db;
+      background: #ffffff;
+      color: #111827;
+    }
+    input::placeholder {
+      color: #9ca3af;
+    }
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    button {
+      cursor: pointer;
+      border: 0;
+      background: linear-gradient(180deg, #22c55e, #16a34a);
+      color: #052e16;
+      font-weight: 800;
+    }
+    footer {
+      margin-top: 20px;
+      color: #6b7280;
+      font-size: 12px;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
   <div class="wrap">
-    <header>
-      <div class="logo" aria-hidden></div>
-      <div>
-        <h1>🎨 Kolorowanka: pobierz PDF z kodem</h1>
-        <div class="help">Demo front‑end (statyczne) – idealne pod GitHub Pages. PDF powstaje w przeglądarce, bez serwera.</div>
-      </div>
-    </header>
+    <h1>🎨 Wężyk Wstężyk 2025</h1>
+    <form id="form">
+      <label for="art">Wybierz obrazek</label>
+      <select id="art" required>
+        <option value="plac-budowy">Plac budowy</option>
+        <option value="park-i-piknik">Park i piknik</option>
+        <option value="farma">Farma</option>
+      </select>
 
-    <div class="grid">
-      <section class="card">
-        <h2>1) Wypełnij formularz</h2>
-        <form id="form">
-          <label for="art">Wybierz obrazek</label>
-          <select id="art" required>
-            <option value="plac-budowy">Plac budowy</option>
-            <option value="miejskie-zwierzaki">Miejskie zwierzaki</option>
-            <option value="park-i-piknik">Park i piknik</option>
-            <option value="farma">Farma</option>
+      <div class="row">
+        <div>
+          <label for="gender">Płeć dziecka</label>
+          <select id="gender" required>
+            <option value="dziewczynka">Dziewczynka</option>
+            <option value="chlopiec">Chłopiec</option>
           </select>
-
-          <div class="row">
-            <div>
-              <label for="gender">Płeć dziecka</label>
-              <select id="gender" required>
-                <option value="dziewczynka">Dziewczynka</option>
-                <option value="chlopiec">Chłopiec</option>
-                <option value="inne">Inne / Nie podaję</option>
-              </select>
-            </div>
-            <div>
-              <label for="name">Imię dziecka</label>
-              <input id="name" type="text" placeholder="np. Ania" required />
-            </div>
-          </div>
-
-          <label for="email">E‑mail (opcjonalnie, do newslettera)</label>
-          <input id="email" type="email" placeholder="np. mama@domena.pl" />
-          <div class="help">Wersja demo – brak wysyłki e‑mail. Checkbox tylko poglądowo.</div>
-
-          <label for="code">Kod</label>
-          <input id="code" class="code" type="text" placeholder="np. VIP-1234 albo FREE-0001" required />
-          <div class="help">Wersja demo akceptuje kody: <span class="code">VIP-1234</span>, <span class="code">VIP-ABCD</span>, <span class="code">FREE-0001</span>.</div>
-
-          <div class="actions">
-            <button type="submit" class="primary">Wygeneruj PDF</button>
-            <button type="button" id="btnTest">Podgląd dyplomu</button>
-          </div>
-        </form>
-      </section>
-
-      <aside class="card">
-        <h2>2) Jak to zdeployować na GitHub Pages?</h2>
-        <ol>
-          <li>Utwórz repo, dodaj ten plik jako <b>index.html</b>.</li>
-          <li>W GitHub → <b>Settings → Pages</b> → Source: <b>Deploy from a branch</b>, branch: <b>main</b>, folder: <b>/ (root)</b>.</li>
-          <li>Po chwili strona będzie dostępna pod adresem GitHub Pages Twojego repo.</li>
-        </ol>
-        <div class="preview">
-          <span class="chip">Front‑end only</span>
-          <span class="chip">Brak backendu</span>
-          <span class="chip">jsPDF</span>
-          <span class="chip">RODO‑safe (demo)</span>
         </div>
-        <p class="help" style="margin-top:10px">Uwaga: w demie kody są jawnie zaszyte w JS (widoczne w źródle). W produkcji przenieś weryfikację kodów na serwer.</p>
-      </aside>
-    </div>
+        <div>
+          <label for="name">Imię dziecka</label>
+          <input id="name" type="text" placeholder="np. Ania" required />
+        </div>
+      </div>
 
-    <footer>
-      <p>© Kolorowanka – demo pobierania PDF. Kontury kolorowanki: czarne #000000 na białym tle. Proporcje PDF: A4 (210×297 mm).</p>
-    </footer>
+      <label for="code">Kod</label>
+      <input id="code" type="text" placeholder="np. 123" required />
+
+      <button type="submit">ODBIERZ NAGRODĘ</button>
+    </form>
+
+    <footer>© Wężyk Wstężyk 2025</footer>
   </div>
 
-<script>
-  // —— PROSTE USTAWIENIA DEMO ——
-  const VALID_VIP = new Set(["VIP-1234","VIP-ABCD"]);   // dyplom + kolorowanka
-  const VALID_FREE = new Set(["FREE-0001"]);              // tylko kolorowanka
+  <script>
+    const VALID_CODES = new Set(["123", "234", "345"]);
 
-  // Mapy ładnych nazw obrazków
-  const ART_LABELS = {
-    "plac-budowy":"Plac budowy",
-    "miejskie-zwierzaki":"Miejskie zwierzaki",
-    "park-i-piknik":"Park i piknik",
-    "farma":"Farma"
-  };
+    document.getElementById("form").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const code = document.getElementById("code").value.trim();
+      if (!VALID_CODES.has(code))
+        return alert("Nieprawidłowy kod. Użyj: 123, 234 lub 345");
 
-  // Prosty tekst na dyplomie w zależności od płci (opcjonalna personalizacja)
-  function titleByGender(g) {
-    if (g === "dziewczynka") return "Super‑Kolorystka";
-    if (g === "chlopiec") return "Super‑Kolorysta";
-    return "Mistrzyni/Mistrz Kolorowania";
-  }
+      const params = new URLSearchParams({
+        art: document.getElementById("art").value,
+        gender: document.getElementById("gender").value,
+        name: document.getElementById("name").value.trim(),
+        code,
+      });
 
-  // Rysunek kolorowanki: czarne kontury (#000000) na białym tle – generowane wektorowo przez jsPDF
-  function drawColoringPage(doc) {
-    // Tło białe
-    doc.setFillColor(255,255,255);
-    doc.rect(0,0,210,297,'F');
-
-    // Ustawienia linii – czarne kontury
-    doc.setDrawColor(0,0,0);
-    doc.setLineWidth(0.6);
-
-    // Tytuł strony
-    doc.setFont('helvetica','bold');
-    doc.setFontSize(18);
-    doc.text('Kolorowanka – Balonik, Latawiec i Donica', 105, 18, {align:'center'});
-
-    // Prosty balonik (elipsa + sznurek)
-    doc.setLineWidth(1.2);
-    doc.ellipse(55, 72, 22, 28, 'S');      // balon
-    doc.setLineWidth(0.6);
-    doc.line(55, 100, 58, 115);            // sznurek
-    doc.line(58, 115, 53, 130);
-    doc.line(53, 130, 60, 144);
-    // wiązanie pod balonem
-    doc.line(46, 102, 64, 102);
-
-    // Latawiec (rombowy) + ogon
-    const kx = 140, ky = 70, s = 26;
-    doc.setLineWidth(1.2);
-    doc.line(kx, ky - s, kx + s, ky);      // prawa krawędź
-    doc.line(kx + s, ky, kx, ky + s);      // dół
-    doc.line(kx, ky + s, kx - s, ky);      // lewa krawędź
-    doc.line(kx - s, ky, kx, ky - s);      // góra
-    // przekątne
-    doc.setLineWidth(0.6);
-    doc.line(kx - s, ky, kx + s, ky);
-    doc.line(kx, ky - s, kx, ky + s);
-    // ogon (falująca linia + kokardki)
-    doc.line(140, 96, 136, 110);
-    doc.line(136, 110, 142, 122);
-    doc.line(142, 122, 130, 138);
-    // kokardki
-    function bow(cx, cy, w=6, h=4){
-      doc.line(cx, cy, cx - w, cy - h);
-      doc.line(cx, cy, cx - w, cy + h);
-      doc.line(cx, cy, cx + w, cy - h);
-      doc.line(cx, cy, cx + w, cy + h);
-    }
-    bow(136,110); bow(142,122); bow(130,138);
-
-    // Donica miejska (owalna) z grupami kwiatów – proste kształty
-    // Donica – elipsy (góra i podstawa) i ścianki
-    const dx = 45, dy = 200, rx = 38, ry = 10;
-    doc.setLineWidth(1.2);
-    doc.ellipse(dx + 60, dy, rx, ry, 'S');      // górna elipsa
-    doc.setLineWidth(0.6);
-    doc.line(dx + 22, dy, dx + 22, dy + 24);    // lewa ścianka
-    doc.line(dx + 98, dy, dx + 98, dy + 24);    // prawa ścianka
-    doc.ellipse(dx + 60, dy + 24, rx, ry, 'S'); // dolna elipsa (podstawa)
-
-    // Kwiaty – kółka/płatki
-    function flower(cx, cy, r=3.6){
-      // płatki
-      doc.circle(cx - r, cy, r, 'S');
-      doc.circle(cx + r, cy, r, 'S');
-      doc.circle(cx, cy - r, r, 'S');
-      doc.circle(cx, cy + r, r, 'S');
-      // środek
-      doc.circle(cx, cy, r*0.9, 'S');
-    }
-    // grupy kwiatów
-    const flowers = [
-      [dx + 46, dy - 10],[dx + 60, dy - 14],[dx + 74, dy - 9],
-      [dx + 34, dy - 6],[dx + 86, dy - 5],[dx + 60, dy - 2]
-    ];
-    flowers.forEach(([cx,cy])=> flower(cx,cy));
-
-    // Delikatne trawy
-    for (let i=0;i<8;i++){
-      const bx = dx + 30 + i*8;
-      doc.line(bx, dy + 12, bx - 2, dy - 2 - (i%3));
-    }
-
-    // Ramka bezpieczeństwa
-    doc.setLineWidth(0.3);
-    doc.rect(12, 12, 186, 273, 'S');
-
-    // Notka o stylu
-    doc.setFont('helvetica','normal');
-    doc.setFontSize(10);
-    doc.text('Czarne kontury (#000000), białe tło – gotowe do druku i kolorowania.', 105, 286, {align:'center'});
-  }
-
-  // Dyplom – strona 1
-  function drawDiploma(doc, {name, gender, art, code}){
-    // Tło białe
-    doc.setFillColor(255,255,255);
-    doc.rect(0,0,210,297,'F');
-
-    // Nagłówek
-    doc.setTextColor(0,0,0);
-    doc.setFont('helvetica','bold');
-    doc.setFontSize(26);
-    doc.text('Dyplom ' + titleByGender(gender), 105, 36, {align:'center'});
-
-    // Imię
-    doc.setFontSize(38);
-    doc.text(name || 'Twoje imię', 105, 70, {align:'center'});
-
-    // Opis
-    doc.setFont('helvetica','normal');
-    doc.setFontSize(14);
-    const lines = [
-      'Za wspaniałe kolorowanie sceny: ' + (ART_LABELS[art]||art),
-      'i kreatywność bez granic!'
-    ];
-    let y = 92;
-    lines.forEach(t=>{ doc.text(t, 105, y, {align:'center'}); y+=8; });
-
-    // Prosta plakietka/kapsuła
-    doc.setDrawColor(0,0,0);
-    doc.setLineWidth(0.8);
-    doc.roundedRect(40, 120, 130, 18, 6, 6, 'S');
-    doc.setFont('helvetica','bold');
-    doc.setFontSize(16);
-    doc.text('Kolorowanka – Kolekcja Demo', 105, 133, {align:'center'});
-
-    // Sekcja kodu (echo)
-    doc.setFont('helvetica','normal');
-    doc.setFontSize(11);
-    doc.text('Kod zamówienia: ' + code, 105, 160, {align:'center'});
-
-    // „Pieczęć” – okrąg z gwiazdkami (prosty znak jakości)
-    doc.setLineWidth(1.2);
-    doc.circle(105, 205, 28, 'S');
-    doc.setFont('helvetica','bold');
-    doc.setFontSize(14);
-    doc.text('BRAWO!', 105, 203, {align:'center'});
-    doc.setFontSize(10);
-    doc.text('SUPER KOLOROWANIE', 105, 213, {align:'center'});
-
-    // Stopka
-    doc.setFont('helvetica','normal');
-    doc.setFontSize(10);
-    doc.text('Data: ' + new Date().toLocaleDateString('pl-PL'), 20, 286);
-    doc.text('© Kolorowanka – demo PDF (A4)', 190, 286, {align:'right'});
-  }
-
-  // Główna akcja: generowanie PDF
-  document.getElementById('form').addEventListener('submit', async (e)=>{
-    e.preventDefault();
-    const art = document.getElementById('art').value;
-    const gender = document.getElementById('gender').value;
-    const name = document.getElementById('name').value.trim();
-    const email = document.getElementById('email').value.trim();
-    const code = document.getElementById('code').value.trim().toUpperCase();
-
-    // Walidacja kodu – DEMO
-    let mode = null; // 'vip' | 'free'
-    if (VALID_VIP.has(code)) mode = 'vip';
-    else if (VALID_FREE.has(code)) mode = 'free';
-
-    if (!mode){
-      alert('Nieprawidłowy kod w wersji demo. Użyj: VIP-1234, VIP-ABCD albo FREE-0001');
-      return;
-    }
-
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF({unit:'mm', format:'a4'});
-
-    if (mode === 'vip'){
-      drawDiploma(doc, {name, gender, art, code});
-      doc.addPage('a4','portrait');
-      drawColoringPage(doc);
-    } else {
-      drawColoringPage(doc);
-    }
-
-    const fname = (mode==='vip' ? `dyplom+kolorowanka_${name||'kolorysta'}.pdf`
-                                : `kolorowanka_${name||'kolorysta'}.pdf`);
-    doc.save(fname);
-  });
-
-  // Podgląd: szybkie wygenerowanie samego dyplomu
-  document.getElementById('btnTest').addEventListener('click', ()=>{
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF({unit:'mm', format:'a4'});
-    drawDiploma(doc, {name:'Ania', gender:'dziewczynka', art:'plac-budowy', code:'VIP-1234'});
-    doc.save('podglad-dyplomu.pdf');
-  });
-</script>
+      window.location.href = "gratulacje.html?" + params.toString();
+    });
+  </script>
 </body>
 </html>
