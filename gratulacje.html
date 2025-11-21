@@ -34,6 +34,7 @@
   </div>
 
 <script>
+  // --- PARAMETRY Z URL ---
   const params=new URLSearchParams(location.search);
   const name=params.get('name')||'Twoje imię';
   const gender=params.get('gender')||'dziewczynka';
@@ -58,8 +59,10 @@
   const downloadLink=document.getElementById('downloadColor');
 
   async function ensureExists(url){
-    try{ const res=await fetch(url,{method:'HEAD'}); return res.ok; }
-    catch(e){ return false; }
+    try{
+      const res=await fetch(url,{method:'HEAD'});
+      return res.ok;
+    }catch(e){return false;}
   }
 
   downloadLink.addEventListener('click',async (e)=>{
@@ -96,7 +99,19 @@
     genderText.textContent='Wykazałaś się świetną spostrzegawczością — dlatego czeka na Ciebie nagroda: osobista kolorowanka oraz dyplom z imieniem.';
   }
 
-  /* ---------- PDF Z POLSKIMI ZNAKAMI (KozGoPro-Medium) ---------- */
+  // ------------- FONT Z POLSKIMI ZNAKAMI (Inter) -------------
+  // W tym miejscu wklejasz base64 wygenerowane przez konwerter jsPDF:
+  // ZAMIEN "PASTE_BASE64_HERE" NA PRAWDZIWY, DŁUGI CIĄG Z KONWERTERA
+  (function(){
+    const { jsPDF } = window.jspdf;
+
+    const INTER_REGULAR = "PASTE_BASE64_HERE";
+
+    // Rejestracja fontu w jsPDF
+    jsPDF.API.addFileToVFS("Inter-Regular.ttf", INTER_REGULAR);
+    jsPDF.API.addFont("Inter-Regular.ttf", "InterPDF", "normal");
+    jsPDF.API.addFont("Inter-Regular.ttf", "InterPDF", "bold");
+  })();
 
   function titleByGender(g){
     return g==='dziewczynka' ? 'Super-Kolorystka' : 'Super-Kolorysta';
@@ -105,11 +120,9 @@
   function drawDiploma(doc){
     doc.setFillColor(255,255,255);
     doc.rect(0,0,210,297,'F');
-
     doc.setTextColor(0,0,0);
 
-    // Wbudowana czcionka działająca z polskimi znakami
-    const FONT = 'KozGoPro-Medium';
+    const FONT = 'InterPDF';
 
     doc.setFont(FONT,'bold');
     doc.setFontSize(26);
@@ -124,7 +137,6 @@
       'Za wspaniałe kolorowanie sceny: '+(ART_LABELS[art]||art),
       'i kreatywność bez granic!'
     ];
-
     let y=92;
     lines.forEach(t=>{
       doc.text(t,105,y,{align:'center'});
