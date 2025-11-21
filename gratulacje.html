@@ -99,20 +99,6 @@
     genderText.textContent='Wykazałaś się świetną spostrzegawczością — dlatego czeka na Ciebie nagroda: osobista kolorowanka oraz dyplom z imieniem.';
   }
 
-  // ------------- FONT Z POLSKIMI ZNAKAMI (Inter) -------------
-  // W tym miejscu wklejasz base64 wygenerowane przez konwerter jsPDF:
-  // ZAMIEN "PASTE_BASE64_HERE" NA PRAWDZIWY, DŁUGI CIĄG Z KONWERTERA
-  (function(){
-    const { jsPDF } = window.jspdf;
-
-    const INTER_REGULAR = "PASTE_BASE64_HERE";
-
-    // Rejestracja fontu w jsPDF
-    jsPDF.API.addFileToVFS("Inter-Regular.ttf", INTER_REGULAR);
-    jsPDF.API.addFont("Inter-Regular.ttf", "InterPDF", "normal");
-    jsPDF.API.addFont("Inter-Regular.ttf", "InterPDF", "bold");
-  })();
-
   function titleByGender(g){
     return g==='dziewczynka' ? 'Super-Kolorystka' : 'Super-Kolorysta';
   }
